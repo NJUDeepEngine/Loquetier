@@ -1,0 +1,11 @@
+__pycache__/
+
+.vscode/
+.cache/
+cache/
+
+*.egg-info/
+*.py[cod]
+*.so
+
+/kernel_src/*
