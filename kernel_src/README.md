@@ -2,6 +2,8 @@
 
 To meet the needs of Loquetier and support its computational flow design, we redesigned Punica’s kernel and named it the Segmented Multi-LoRA Multiplication (SMLM) kernel. It supports automatic gradient tracking in PyTorch, handles each LoRA linear layer independently for each module, reduces computational overhead, and avoids additional LoRA model preprocessing.
 
+We also fixed some bugs in Punica and applied some bug fixes to Flashinfer from its later commits. Therefore, we didn't add them as submodules. Some modules contribute to the work we are based on, but for the purpose of repository brevity, we removed modules that were not used. These modules and work can be reviewed in submodule repositories.
+
 ## Installation
 
 Since we modified the kernel, it is currently only available via build from source.
