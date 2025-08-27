@@ -1,0 +1,28 @@
+{
+    "base_model_path": "",
+    "lora_model_path": "",
+    "lora_names": [
+        "alpaca"
+    ],
+    "generation_config": {
+        "bos_token_id": 128000,
+        "eos_token_id": 128001,
+        "do_sample": true,
+        "temperature": 0.9,
+        "max_length": 1024,
+        "top_p": 0.8,
+        "repetition_penalty": 1.1,
+        "transformers_version": "4.40.0.dev0"
+    },
+    "testcases": [
+        {
+            "lora_name": "alpaca",
+            "jsonl_path": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+            "sample_num": 800,
+            "request_start": 0,
+            "request_sample_method": "StableInterval",
+            "request_sample_interval": 1,
+            "request_sample_deviation": 0
+        }
+    ]
+}
