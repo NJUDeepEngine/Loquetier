@@ -3,6 +3,7 @@ import json
 import os
 
 import numpy as np
+from scipy.stats import truncnorm
 import torch
 import transformers
 from transformers import AutoTokenizer
@@ -18,7 +19,24 @@ from loquetier_src.model_workflow import (
     RequestWithTime,
     run_inference as run_offline
 )
-from .interval_generator import *
+
+
+def NormalInterval(length, total_time, mean_ratio=0.5, std_ratio=0.1, **kwargs):
+    offset = kwargs.get('offest', 0)
+    intervals = sorted(
+        truncnorm.rvs(
+            -mean_ratio / std_ratio,
+            (1 - mean_ratio) / std_ratio,
+            loc=total_time * mean_ratio,
+            scale=total_time * std_ratio,
+            size=length
+        )
+    )
+    last_interval = -offset
+    for interval in intervals:
+        yield interval - last_interval
+        last_interval = interval
+    return
 
 def parse_args():
     parser = argparse.ArgumentParser(description="")
@@ -92,7 +110,7 @@ if __name__ == "__main__":
         sample_num = testcase['sample_num']
         sample_offset = testcase['sample_offset'] if 'sample_offset' in testcase else 0
         request_start = testcase['request_start']
-        request_sample_method = INTERVAL_GENERATORS.get(testcase['request_sample_method'], None)
+        request_sample_method = NormalInterval
         if request_sample_method is not None:
             intervals = np.cumsum(list(
                 request_sample_method(
