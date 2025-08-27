@@ -17,9 +17,9 @@ from contextlib import contextmanager
 from typing import Any, Callable, Dict, Iterator, List, Optional, OrderedDict, Tuple, Union
 
 # Kernel Utils
-from .kernel_utils import add_lora, BatchLenInfo
+from ..kernel_utils import add_lora, BatchLenInfo
 
-from punica.utils.kvcache import BatchedKvCache
+from loquetier.utils.kvcache import BatchedKvCache
 
 class MixedLoraContext:
     def __init__(self):

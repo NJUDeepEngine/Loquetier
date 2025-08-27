@@ -1,0 +1,12 @@
+# sdist & wheel
+include version.txt
+recursive-include licenses *
+recursive-include csrc *
+recursive-include third_party/cutlass/include *
+recursive-include third_party/flashinfer/include *
+
+# wheel-only
+exclude src/loquetier/_build_meta.py
+
+# Unneeded files
+prune */__pycache__

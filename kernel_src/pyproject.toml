@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools", "torch", "numpy", "ninja", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loquetier"
+description = "Loquetier: A Virtualized Multi-LoRA Framework for Unified LLM Fine-tuning and Serving"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["pytorch", "llm", "lora", "transformer"]
+dynamic = ["version"]
+dependencies = [
+    "torch",
+    "transformers",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytz",
+    "tqdm",
+    "scipy",
+    "peft",
+    "accelerate",
+    "textual",
+]
+
+# Include different sets of files for sdist and wheel
+# see: https://stackoverflow.com/a/54953494/1332817
+[tool.setuptools.package-data]  # wheel-only files
+loquetier = ["src/loquetier/_build_meta.py"]
+[tool.setuptools.exclude-package-data]  # exclude from wheel
+loquetier = ["csrc", "third_party"]
+
+[tool.ruff]
+exclude = ["third_party", "src/loquetier/_build_meta.py"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["loquetier"]
+combine-as-imports = true
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "I",   # isort
+]
+ignore = [
+    "E501", # Line too long
+    "E741", # Ambiguous variable name
+]
+
+[tool.ruff.per-file-ignores]
+
+[tool.pyright]
+include = ["src"]

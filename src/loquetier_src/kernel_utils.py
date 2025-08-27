@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch.autograd.function import Function, FunctionCtx
 
-from punica.ops import _kernels as kernel
+from loquetier.ops import _kernels as kernel
 
 
 class BatchLenInfo:

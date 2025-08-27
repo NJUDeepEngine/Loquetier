@@ -9,7 +9,7 @@ from transformers.tokenization_utils import PreTrainedTokenizer
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 from .enums import InferStatus, TrainerProcessType
-from .models.model_generation import InputRequest, ModelGeneration
+from .model_generation import InputRequest, ModelGeneration
 from .trainer_utils import WrappedTrainingLoopGenerator
 
 

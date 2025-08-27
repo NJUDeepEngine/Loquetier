@@ -7,5 +7,3 @@ cache/
 *.egg-info/
 *.py[cod]
 *.so
-
-/kernel_src/*

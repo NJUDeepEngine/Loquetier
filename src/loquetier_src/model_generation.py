@@ -14,13 +14,13 @@ from transformers.modeling_utils import PreTrainedModel
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 # Enums
-from ..enums import InferStatus
+from .enums import InferStatus
 
 # Kernel Utils
-from ..kernel_utils import BatchLenInfo
+from .kernel_utils import BatchLenInfo
 
-# Punica KV Management
-from punica.utils import KvPool, KvCache, BatchedKvCache
+# KV Management from Punica
+from loquetier.utils import KvPool, KvCache, BatchedKvCache
 
 def contrastive_search(next_token_scores: torch.FloatTensor) -> torch.Tensor:
     next_token_ids = torch.topk(next_token_scores, 2)[1][:, 0]

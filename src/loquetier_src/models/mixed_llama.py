@@ -33,13 +33,13 @@ from ..kernel_utils import (
     rms_norm
 )
 
-from punica.ops import (
+from loquetier.ops import (
     append_kv,
     batch_decode,
     batch_prefill,
     init_kv
 )
-from punica.utils.kvcache import BatchedKvCache
+from loquetier.utils.kvcache import BatchedKvCache
 
 logger = logging.get_logger(__name__)
 

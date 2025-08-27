@@ -1,0 +1,11 @@
+build/
+csrc/flashinfer_adapter/generated/
+src/loquetier/_build_meta.py
+
+.vscode/
+.cache/
+__pycache__/
+
+*.egg-info/
+
+/third_party/flashinfer/
