@@ -1,0 +1,59 @@
+{
+    "base_model_path": "",
+    "lora_model_path": "",
+    "lora_names": [
+        "alpaca", "alpaca1", "alpaca2", "alpaca3"
+    ],
+    "generation_config": {
+        "bos_token_id": 128000,
+        "eos_token_id": 128001,
+        "do_sample": true,
+        "temperature": 0.9,
+        "max_length": 1024,
+        "top_p": 0.8,
+        "repetition_penalty": 1.1,
+        "transformers_version": "4.40.0.dev0"
+    },
+    "testcases": [
+        {
+            "lora_name": "alpaca",
+            "jsonl_path": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+            "sample_num": 120,
+            "sample_offset": 0,
+            "request_start": 0,
+            "request_sample_method": "StableInterval",
+            "request_sample_interval": 1,
+            "request_sample_deviation": 0
+        },
+        {
+            "lora_name": "alpaca1",
+            "jsonl_path": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+            "sample_num": 150,
+            "sample_offset": 5000,
+            "request_start": 120,
+            "request_sample_method": "StableInterval",
+            "request_sample_interval": 0.4,
+            "request_sample_deviation": 0
+        },
+        {
+            "lora_name": "alpaca2",
+            "jsonl_path": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+            "sample_num": 240,
+            "sample_offset": 10000,
+            "request_start": 180,
+            "request_sample_method": "StableInterval",
+            "request_sample_interval": 0.5,
+            "request_sample_deviation": 0
+        },
+        {
+            "lora_name": "alpaca3",
+            "jsonl_path": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+            "sample_num": 120,
+            "sample_offset": 15000,
+            "request_start": 300,
+            "request_sample_method": "StableInterval",
+            "request_sample_interval": 1,
+            "request_sample_deviation": 0
+        }
+    ]
+}
