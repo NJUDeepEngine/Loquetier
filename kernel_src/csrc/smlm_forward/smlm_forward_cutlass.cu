@@ -16,10 +16,10 @@ template bool smlm_forward<nv_half, cutlass::layout::ColumnMajor>(
 
 template bool smlm_forward<nv_bfloat16, cutlass::layout::RowMajor>(
     nv_bfloat16 *y, nv_bfloat16 *x, nv_bfloat16 **w, int32_t *s, void *tmp_d,
-    int num_problems, int d_in, int w_ld, int d_out, cudaStream_t stream
+    int num_problems, int d_in, int d_out, int w_ld, cudaStream_t stream
 );
 
 template bool smlm_forward<nv_bfloat16, cutlass::layout::ColumnMajor>(
     nv_bfloat16 *y, nv_bfloat16 *x, nv_bfloat16 **w, int32_t *s, void *tmp_d,
-    int num_problems, int d_in, int w_ld, int d_out, cudaStream_t stream
+    int num_problems, int d_in, int d_out, int w_ld, cudaStream_t stream
 );

@@ -35,10 +35,10 @@ __global__ void precompute_smlm_forward_args(
   int32_t *s, int d_in, int d_out, int w_ld
 ) {
   int i = blockIdx.x;
-  int m = s[i + 1] - s[i], k = d_in, n = d_out, kn = w_ld;
+  int m = s[i + 1] - s[i], n = d_out, k = d_in, kn = w_ld;
   all_problems[i] = cutlass::gemm::GemmCoord(m, n, k);
-  ptr_w[i] = w[i];
   ptr_x[i] = x + s[i] * k;
+  ptr_w[i] = w[i];
   ptr_y[i] = y + s[i] * n;
   ld_x[i] = k;
   ld_w[i] = kn;
@@ -74,8 +74,9 @@ bool smlm_forward(
   auto all_problems =
       alloc_from_buf<cutlass::gemm::GemmCoord>(&tmp_d, num_problems);
   precompute_smlm_forward_args<<<num_problems, 1, 0, stream>>>(
-      all_problems, ptr_Y, ptr_X, ptr_W, ld_Y, ld_X, ld_W, (cutlass_t *)y,
-      (cutlass_t *)x, (cutlass_t **)w, s, d_in, d_out, w_ld);
+      all_problems, ptr_Y, ptr_X, ptr_W, ld_Y, ld_X, ld_W,
+      (cutlass_t *)y, (cutlass_t *)x, (cutlass_t **)w,
+      s, d_in, d_out, w_ld);
   using cutlass::epilogue::thread::LinearCombination;
   using cutlass::gemm::threadblock::GemmIdentityThreadblockSwizzle;
   if (d_in < d_out) {
@@ -103,7 +104,7 @@ bool smlm_forward(
         >::GemmKernel;
 
     using EpilogueOutputOp = typename GemmKernel::Epilogue::OutputOp;
-    typename EpilogueOutputOp::Params epilogue_op(1.0, 1.0);
+    typename EpilogueOutputOp::Params epilogue_op(1.0, 0.0);
 
     using GemmGrouped = cutlass::gemm::device::GemmGrouped<GemmKernel>;
     typename GemmGrouped::Arguments args(all_problems, num_problems, 512,
@@ -148,7 +149,7 @@ bool smlm_forward(
         >::GemmKernel;
 
     using EpilogueOutputOp = typename GemmKernel::Epilogue::OutputOp;
-    typename EpilogueOutputOp::Params epilogue_op(1.0, 1.0);
+    typename EpilogueOutputOp::Params epilogue_op(1.0, 0.0);
 
     using GemmGrouped = cutlass::gemm::device::GemmGrouped<GemmKernel>;
     typename GemmGrouped::Arguments args(all_problems, num_problems, 512,

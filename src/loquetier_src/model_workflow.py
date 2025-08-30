@@ -139,6 +139,7 @@ def run_inference(
     while model.requests_len > 0:
         model_start = time()
         model.generate()
+        model_end = time()
         generation_info_lst.append(GenerateInfo(
             prefill_tokens, len(model.output_with_mark_ids),
             model_end - model_start, time_idle
@@ -749,7 +750,8 @@ def run_finetune_inference_scalable(
     max_batch_size: int,
     max_serve_wait: Optional[float] = None,
     infer_steps_per_finetune_step: int = 5,
-    collect_output: bool = False
+    collect_output: bool = False,
+    force_stop_finetuning: bool = False
 ) -> Tuple[List[GenerateInfo], List[FinetuneInfo], float, List[float]]:
     generation_info_lst = []
     slo_info = []
@@ -814,6 +816,11 @@ def run_finetune_inference_scalable(
                     break
                 request, next_time = (input_list[input_ind].request,
                                     input_list[input_ind].start_time)
+        elif force_stop_finetuning and len(
+            [None for r in model.requests if r.status != InferStatus.Train]
+        ) + len(model.prefill_requests) == 0:
+            print('Force Stop Finetuning')
+            break
         
         infer_steps_per_finetune_step = int((model.requests_len * 5 - 1) / max_batch_size) + 1
         
@@ -916,9 +923,9 @@ def run_finetune_inference_scalable(
             model_start = time()
             model.generate()
             model_end = time()
-            # finetune_info_lst.append(FinetuneInfo(
-            #     3, 0, model_end - model_start, 0
-            # ))
+            finetune_info_lst.append(FinetuneInfo(
+                3, 0, model_end - model_start, 0
+            ))
             generation_info_lst.append(GenerateInfo(
                 prefill_tokens, len(model.output_with_mark_ids),
                 model_end - model_start, 0

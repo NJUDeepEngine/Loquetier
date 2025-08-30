@@ -499,25 +499,25 @@ class MixedLoraModel(nn.Module):
         ))
 
     def _prepare_weight(
-            self,
-            weight: torch.Tensor,
-            device: torch.device,
-            rank_dim: int = 0,
-            scaling: Optional[float] = None,
-        ):
+        self,
+        weight: torch.Tensor,
+        device: torch.device,
+        rank_dim: int = 0,
+        scaling: Optional[float] = None,
+    ):
         weight = weight.detach()
         if weight.size(rank_dim) == self.rank:
             if scaling is None:
-                return weight.T.to(dtype=self.dtype, device=device).contiguous()
+                return weight.to(dtype=self.dtype, device=device).contiguous()
             else:
-                return (weight.T * scaling).to(dtype=self.dtype, device=device).contiguous()
+                return (weight * scaling).to(dtype=self.dtype, device=device).contiguous()
         new_size = list(weight.size())
         new_size[rank_dim] = self.rank
-        new_weight = torch.zeros(new_size[::-1], dtype=self.dtype, device=device)
+        new_weight = torch.zeros(new_size, dtype=self.dtype, device=device)
         if scaling is None:
-            new_weight[:weight.size(1), :weight.size(0)].copy_(weight.T, non_blocking=True)
+            new_weight[:weight.size(0), :weight.size(1)].copy_(weight, non_blocking=True)
         else:
-            new_weight[:weight.size(1), :weight.size(0)].copy_(weight.T * scaling, non_blocking=True)
+            new_weight[:weight.size(0), :weight.size(1)].copy_(weight * scaling, non_blocking=True)
         return new_weight
     
     def _prepare_special_tokens(self, *args, **kwargs):
@@ -762,4 +762,3 @@ class MixedLoraModelForTrainer(nn.Module):
                 destination = hook_result
         destination = OrderedDict(filter(lambda kv: 'lora' in kv[0], destination.items()))
         return destination
-

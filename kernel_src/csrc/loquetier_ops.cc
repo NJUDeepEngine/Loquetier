@@ -75,7 +75,7 @@ inline constexpr uint32_t pack_u16(uint16_t a, uint16_t b) {
 
 //====== dispatch layout ======
 
-#define DISPATCH_LAYOUT(is_row_major, ...)      \
+#define DISPATCH_LAYOUT(is_row_major, ...)       \
   if (is_row_major) {                            \
     using layout = cutlass::layout::RowMajor;    \
     __VA_ARGS__                                  \

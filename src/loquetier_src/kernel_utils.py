@@ -111,12 +111,12 @@ class add_lora(Function):
         train_partition: Sequence[int],
         *args
     ) -> torch.Tensor:
-        y = torch.zeros(y_shape, dtype=x.dtype, device=x.device)
-        tmp_size = kernel.sgmv_cutlass_tmp_size(wa_ptr.size(0))
+        y = torch.empty(y_shape, dtype=x.dtype, device=x.device)
+        tmp_size = kernel.smlm_forward_cutlass_tmp_size(wa_ptr.size(0))
         tmp = torch.empty((tmp_size,), dtype=torch.uint8, device=x.device)
-        v = torch.zeros((x.size(0), lora_rank), dtype=x.dtype, device=x.device)
-        kernel.sgmv_cutlass(v, x, wa_ptr, s, tmp)
-        kernel.sgmv_cutlass(y, v, wb_ptr, s, tmp)
+        v = torch.empty((x.size(0), lora_rank), dtype=x.dtype, device=x.device)
+        kernel.smlm_forward_cutlass(v, x, wa_ptr, s, tmp, False)
+        kernel.smlm_forward_cutlass(y, v, wb_ptr, s, tmp, False)
         return y
     
     @staticmethod

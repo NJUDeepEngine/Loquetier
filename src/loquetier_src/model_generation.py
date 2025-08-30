@@ -19,7 +19,7 @@ from .enums import InferStatus
 # Kernel Utils
 from .kernel_utils import BatchLenInfo
 
-# KV Management from Punica
+# KV Management
 from loquetier.utils import KvPool, KvCache, BatchedKvCache
 
 def contrastive_search(next_token_scores: torch.FloatTensor) -> torch.Tensor:
